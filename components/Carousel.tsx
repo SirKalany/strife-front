@@ -3,16 +3,11 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const images = [
-  "/carousel/usarmy.webp",
-  "/carousel/t80.webp",
-  "/carousel/ka52.webp",
-  "/carousel/forest.webp",
-  "/carousel/caesar.webp",
-  "/carousel/jason.webp",
-];
+interface CarouselProps {
+  images: string[];
+}
 
-export default function Carousel() {
+export default function Carousel({ images }: CarouselProps) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -21,7 +16,7 @@ export default function Carousel() {
       5000,
     );
     return () => clearInterval(interval);
-  }, []);
+  }, [images]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">

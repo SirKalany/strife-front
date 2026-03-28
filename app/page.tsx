@@ -1,14 +1,23 @@
 import Link from "next/link";
 import { api, DomainDto } from "@/lib/api";
 import Carousel from "@/components/Carousel";
+import { readdirSync } from "fs";
+import { join } from "path";
+
+function getCarouselImages(): string[] {
+  const dir = join(process.cwd(), "public", "carousel");
+  return readdirSync(dir)
+    .filter((f) => /\.(webp|jpg|jpeg|png)$/i.test(f))
+    .map((f) => `/carousel/${f}`);
+}
 
 export default async function Home() {
   const domains = await api.getDomains();
+  const images = getCarouselImages();
 
   return (
     <main className="relative min-h-screen bg-background">
-      <Carousel />
-
+      <Carousel images={images} />
       <div className="absolute top-6 w-full text-center">
         <h1 className="text-5xl md:text-7xl font-extrabold text-accent tracking-wide drop-shadow-lg">
           Military Equipment Database
