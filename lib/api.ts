@@ -1,13 +1,11 @@
 const API_BASE = "http://localhost:8080/api";
 
 export interface DomainDto {
-  id: string;
   slug: string;
   name: string;
 }
 
 export interface CountryDto {
-  id: string;
   slug: string;
   name: string;
   flagUrl: string;
@@ -31,7 +29,8 @@ export interface ModelSummaryDto {
 }
 
 export interface OperatorDto {
-  country: CountryDto;
+  countrySlug: string;
+  countryName: string;
   notes: string;
 }
 

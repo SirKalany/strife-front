@@ -141,7 +141,7 @@ export default function ArticleContent({ model }: Props) {
           <SectionTitle>OPERATORS</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {model.operators.map((op, i) => (
-              <InfoRow key={i} label={op.country.name} value={op.notes ?? ""} />
+              <InfoRow key={i} label={op.countryName} value={op.notes ?? ""} />
             ))}
           </div>
         </section>

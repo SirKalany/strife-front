@@ -92,7 +92,7 @@ export default function Breadcrumb({
 
       {/* Right: contact button */}
       <Link
-        href="/contact"
+        href="#"
         className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
         style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
       >

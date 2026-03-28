@@ -46,7 +46,7 @@ export default function FamilyGrid({ families, domain, country }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-8">
           {filtered.map((family) => (
             <Link
-              key={family.id}
+              key={family.slug}
               href={`/${encodeURIComponent(domain)}/${encodeURIComponent(country)}/${encodeURIComponent(family.slug)}`}
               className="group block"
             >

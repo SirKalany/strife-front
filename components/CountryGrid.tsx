@@ -46,7 +46,7 @@ export default function CountryGrid({ countries, domain }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-8">
           {filtered.map((country) => (
             <Link
-              key={country.id}
+              key={country.slug}
               href={`/${encodeURIComponent(domain)}/${encodeURIComponent(country.slug)}`}
               className="group block"
             >

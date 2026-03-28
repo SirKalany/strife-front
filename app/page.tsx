@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { api, DomainDto } from "@/lib/api";
-import Carousel from "@/components/Carousel";
 import { readdirSync } from "fs";
 import { join } from "path";
+import Carousel from "@/components/Carousel";
+import { api, DomainDto } from "@/lib/api";
 
 function getCarouselImages(): string[] {
   const dir = join(process.cwd(), "public", "carousel");
@@ -18,6 +18,7 @@ export default async function Home() {
   return (
     <main className="relative min-h-screen bg-background">
       <Carousel images={images} />
+
       <div className="absolute top-6 w-full text-center">
         <h1 className="text-5xl md:text-7xl font-extrabold text-accent tracking-wide drop-shadow-lg">
           Military Equipment Database
@@ -27,12 +28,12 @@ export default async function Home() {
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
         <div className="flex gap-6">
           {domains.slice(0, 3).map((domain, index) => (
-            <DomainCard key={domain.id} domain={domain} index={index} />
+            <DomainCard key={domain.slug} domain={domain} index={index} />
           ))}
         </div>
         <div className="flex gap-6">
           {domains.slice(3).map((domain, index) => (
-            <DomainCard key={domain.id} domain={domain} index={index + 3} />
+            <DomainCard key={domain.slug} domain={domain} index={index + 3} />
           ))}
         </div>
       </div>
@@ -51,10 +52,7 @@ function DomainCard({ domain, index }: { domain: DomainDto; index: number }) {
         className="absolute inset-0 bg-center bg-cover transition-all duration-300 group-hover:scale-105 border border-border group-hover:border-accent"
         style={{ backgroundImage: `url('/${domain.slug}image.webp')` }}
       >
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-linear-to-br from-black/70 via-transparent to-black/90 group-hover:from-green-900/40 group-hover:to-black/80 transition-all duration-300" />
-
-        {/* Grid overlay */}
         <div
           className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
           style={{
@@ -67,7 +65,6 @@ function DomainCard({ domain, index }: { domain: DomainDto; index: number }) {
         />
       </div>
 
-      {/* Content */}
       <div
         className="relative h-full flex flex-col justify-center items-center"
         style={{ transform: "skew(10deg, 0deg)" }}
@@ -84,7 +81,6 @@ function DomainCard({ domain, index }: { domain: DomainDto; index: number }) {
           </div>
         </div>
 
-        {/* Corner accent */}
         <div
           className="absolute top-2 right-2 w-3 h-3 bg-accent opacity-60 group-hover:opacity-100 transition-opacity"
           style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
