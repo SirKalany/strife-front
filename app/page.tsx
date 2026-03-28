@@ -50,7 +50,7 @@ function DomainCard({ domain, index }: { domain: DomainDto; index: number }) {
     >
       <div
         className="absolute inset-0 bg-center bg-cover transition-all duration-300 group-hover:scale-105 border border-border group-hover:border-accent"
-        style={{ backgroundImage: `url('/${domain.slug}image.webp')` }}
+        style={{ backgroundImage: `url('domains/${domain.slug}image.webp')` }}
       >
         <div className="absolute inset-0 bg-linear-to-br from-black/70 via-transparent to-black/90 group-hover:from-green-900/40 group-hover:to-black/80 transition-all duration-300" />
         <div
