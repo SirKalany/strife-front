@@ -1,65 +1,86 @@
-import Image from "next/image";
+import Link from "next/link";
+import { api, DomainDto } from "@/lib/api";
+import Carousel from "@/components/Carousel";
 
-export default function Home() {
+export default async function Home() {
+  const domains = await api.getDomains();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="relative min-h-screen bg-background">
+      <Carousel />
+
+      <div className="absolute top-6 w-full text-center">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-accent tracking-wide drop-shadow-lg">
+          Military Equipment Database
+        </h1>
+      </div>
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-6">
+        <div className="flex gap-6">
+          {domains.slice(0, 3).map((domain, index) => (
+            <DomainCard key={domain.id} domain={domain} index={index} />
+          ))}
+        </div>
+        <div className="flex gap-6">
+          {domains.slice(3).map((domain, index) => (
+            <DomainCard key={domain.id} domain={domain} index={index + 3} />
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function DomainCard({ domain, index }: { domain: DomainDto; index: number }) {
+  return (
+    <Link
+      href={`/${domain.slug}`}
+      className="group relative w-96 h-72"
+      style={{ transform: "skew(-10deg, 0deg)" }}
+    >
+      <div
+        className="absolute inset-0 bg-center bg-cover transition-all duration-300 group-hover:scale-105 border border-border group-hover:border-accent"
+        style={{ backgroundImage: `url('/${domain.slug}image.webp')` }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-linear-to-br from-black/70 via-transparent to-black/90 group-hover:from-green-900/40 group-hover:to-black/80 transition-all duration-300" />
+
+        {/* Grid overlay */}
+        <div
+          className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(34, 197, 94, 0.2) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(34, 197, 94, 0.2) 1px, transparent 1px)
+            `,
+            backgroundSize: "20px 20px",
+          }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      </div>
+
+      {/* Content */}
+      <div
+        className="relative h-full flex flex-col justify-center items-center"
+        style={{ transform: "skew(10deg, 0deg)" }}
+      >
+        <div className="text-center">
+          <div className="text-xs text-accent font-mono mb-1 opacity-80 group-hover:opacity-100">
+            [ DOMAIN {String(index + 1).padStart(2, "0")} ]
+          </div>
+          <span className="text-3xl font-bold text-white tracking-wider group-hover:text-accent transition-colors">
+            {domain.name.toUpperCase()}
+          </span>
+          <div className="mt-1 text-sm text-foreground/50 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+            &gt; ACCESS_GRANTED
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* Corner accent */}
+        <div
+          className="absolute top-2 right-2 w-3 h-3 bg-accent opacity-60 group-hover:opacity-100 transition-opacity"
+          style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
+        />
+      </div>
+    </Link>
   );
 }
