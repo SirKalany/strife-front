@@ -23,7 +23,7 @@ export default function ContentHeader({
           model={model.slug}
           modelTitle={model.name}
         />
-        <h1 className="text-4xl md:text-5xl font-bold text-accent">
+        <h1 className="text-4xl md:text-5xl font-bold text-accent text-center">
           {model.name}
         </h1>
       </header>

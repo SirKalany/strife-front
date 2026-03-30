@@ -36,10 +36,21 @@ function NamedCardList({ items }: { items: Record<string, unknown>[] }) {
               </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {entries.map(([k, v]) => {
+              {entries.map(([k, v], i) => {
                 const str = stringify(v);
                 if (!str) return null;
-                return <InfoRow key={k} label={k} value={str} />;
+                return (
+                  <div
+                    key={k}
+                    className={
+                      entries.length % 2 === 1 && i === entries.length - 1
+                        ? "md:col-span-2"
+                        : ""
+                    }
+                  >
+                    <InfoRow label={k} value={str} />
+                  </div>
+                );
               })}
             </div>
           </div>
@@ -109,8 +120,17 @@ function SpecSection({
       <section>
         <SectionTitle>{sectionKey}</SectionTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {entries.map(([k, v]) => (
-            <InfoRow key={k} label={k} value={stringify(v)} />
+          {entries.map(([k, v], i) => (
+            <div
+              key={k}
+              className={
+                entries.length % 2 === 1 && i === entries.length - 1
+                  ? "md:col-span-2"
+                  : ""
+              }
+            >
+              <InfoRow label={k} value={stringify(v)} />
+            </div>
           ))}
         </div>
       </section>
@@ -141,7 +161,17 @@ export default function ArticleContent({ model }: Props) {
           <SectionTitle>OPERATORS</SectionTitle>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {model.operators.map((op, i) => (
-              <InfoRow key={i} label={op.countryName} value={op.notes ?? ""} />
+              <div
+                key={i}
+                className={
+                  model.operators.length % 2 === 1 &&
+                  i === model.operators.length - 1
+                    ? "md:col-span-2"
+                    : ""
+                }
+              >
+                <InfoRow label={op.countryName} value={op.notes ?? ""} />
+              </div>
             ))}
           </div>
         </section>

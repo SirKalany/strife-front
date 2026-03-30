@@ -18,7 +18,7 @@ export default async function CountryPage({ params }: Props) {
         <Breadcrumb domain={domain} country={country} />
 
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-4">
           <h1 className="text-5xl font-extrabold mb-3 text-accent uppercase tracking-[0.2em]">
             {formatLabel(country)} — {formatLabel(domain)}
           </h1>

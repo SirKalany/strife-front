@@ -28,7 +28,7 @@ export default async function FamilyPage({ params }: Props) {
         />
 
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-4">
           <h1 className="text-5xl font-extrabold mb-3 text-accent uppercase tracking-[0.2em]">
             {familyData?.name ?? family}
           </h1>
@@ -46,7 +46,7 @@ export default async function FamilyPage({ params }: Props) {
           )}
 
           {familyData?.description && (
-            <p className="text-foreground/50 text-sm uppercase mt-6 tracking-widest font-mono max-w-2xl mx-auto">
+            <p className="text-foreground/50 text-sm uppercase mt-4 tracking-widest font-mono max-w-2xl mx-auto">
               {familyData.description}
             </p>
           )}
