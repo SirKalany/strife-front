@@ -98,6 +98,13 @@ export default function Breadcrumb({
       >
         Contact
       </Link>
+      <Link
+        href="/admin"
+        className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
+        style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
+      >
+        Admin
+      </Link>
     </nav>
   );
 }
