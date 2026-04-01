@@ -1,3 +1,5 @@
+TESTING CHANGES AFTER POWER OUTAGE
+
 # strife-front
 
 Frontend for **Strife** — a military encyclopedia covering vehicles and weapons used by countries throughout history.
