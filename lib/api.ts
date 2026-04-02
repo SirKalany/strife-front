@@ -1,11 +1,13 @@
 const API_BASE = "http://localhost:8080/api";
 
 export interface DomainDto {
+  id: string;
   slug: string;
   name: string;
 }
 
 export interface CountryDto {
+  id: string;
   slug: string;
   name: string;
   flagUrl: string;
@@ -66,4 +68,10 @@ export const api = {
     get<ModelSummaryDto[]>(`/families/${family}/models`),
 
   getModel: (model: string) => get<ModelDetailDto>(`/models/${model}`),
+
+  getAllModels: () => get<ModelSummaryDto[]>("/models"),
+
+  getAllFamilies: () => get<FamilyDto[]>("/families"),
+
+  getAllCountries: () => get<CountryDto[]>("/countries"),
 };
