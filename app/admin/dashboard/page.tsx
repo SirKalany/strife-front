@@ -126,53 +126,49 @@ export default function AdminDashboard() {
         {error && <p className="text-red-500 text-xs font-mono">{error}</p>}
 
         {/* Models */}
-        <Section
-          title="Models"
-          count={models.length}
-          empty="No models in the database yet."
-        >
-          {models.map((model) => (
-            <EntryRow
-              key={model.slug}
-              label={model.name}
-              sub={`${model.yearIntroduced}${model.yearRetired ? ` — ${model.yearRetired}` : " — present"}`}
-              editHref={`/admin/edit/${model.slug}`}
-              onDelete={() => handleDeleteModel(model.slug)}
-              deleting={deleting === model.slug}
-            />
-          ))}
+        <Section title="Models" items={models} getLabel={(m) => m.name}>
+          {(filtered) =>
+            filtered.map((model) => (
+              <EntryRow
+                key={model.slug}
+                label={model.name}
+                sub={`${model.yearIntroduced}${
+                  model.yearRetired ? ` — ${model.yearRetired}` : " — present"
+                }`}
+                editHref={`/admin/edit/${model.slug}`}
+                onDelete={() => handleDeleteModel(model.slug)}
+                deleting={deleting === model.slug}
+              />
+            ))
+          }
         </Section>
 
         {/* Families */}
-        <Section
-          title="Families"
-          count={families.length}
-          empty="No families in the database yet."
-        >
-          {families.map((family) => (
-            <EntryRow
-              key={family.slug}
-              label={family.name}
-              onDelete={() => handleDeleteFamily(family.slug)}
-              deleting={deleting === family.slug}
-            />
-          ))}
+        <Section title="Families" items={families} getLabel={(f) => f.name}>
+          {(filtered) =>
+            filtered.map((family) => (
+              <EntryRow
+                key={family.slug}
+                label={family.name}
+                onDelete={() => handleDeleteFamily(family.slug)}
+                deleting={deleting === family.slug}
+              />
+            ))
+          }
         </Section>
 
         {/* Countries */}
-        <Section
-          title="Countries"
-          count={countries.length}
-          empty="No countries in the database yet."
-        >
-          {countries.map((country) => (
-            <EntryRow
-              key={country.slug}
-              label={country.name}
-              onDelete={() => handleDeleteCountry(country.slug)}
-              deleting={deleting === country.slug}
-            />
-          ))}
+        <Section title="Countries" items={countries} getLabel={(c) => c.name}>
+          {(filtered) =>
+            filtered.map((country) => (
+              <EntryRow
+                key={country.slug}
+                label={country.name}
+                onDelete={() => handleDeleteCountry(country.slug)}
+                deleting={deleting === country.slug}
+              />
+            ))
+          }
         </Section>
       </div>
     </main>
@@ -181,26 +177,75 @@ export default function AdminDashboard() {
 
 // --- Sub-components ---
 
-function Section({
+function Section<T>({
   title,
-  count,
-  empty,
+  items,
+  getLabel,
   children,
+  defaultOpen = true,
 }: {
   title: string;
-  count: number;
-  empty: string;
-  children: React.ReactNode;
+  items: T[];
+  getLabel: (item: T) => string;
+  children: (filtered: T[]) => React.ReactNode;
+  defaultOpen?: boolean;
 }) {
+  const [open, setOpen] = useState(defaultOpen);
+  const [filter, setFilter] = useState("");
+
+  const filteredItems = items.filter((item) =>
+    getLabel(item).toLowerCase().includes(filter.toLowerCase()),
+  );
+
   return (
     <div className="space-y-2">
-      <h2 className="text-sm font-mono uppercase tracking-widest text-foreground/50 mb-4">
-        {title} — {count} {count === 1 ? "entry" : "entries"}
-      </h2>
-      {count === 0 ? (
-        <p className="text-foreground/30 font-mono text-sm">{empty}</p>
-      ) : (
-        <div className="space-y-2">{children}</div>
+      {/* Header */}
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="w-full flex items-center justify-between text-left text-sm font-mono uppercase tracking-widest text-foreground/50 hover:text-accent transition"
+      >
+        <span>
+          {title} — {filteredItems.length}{" "}
+          {filteredItems.length === 1 ? "entry" : "entries"}
+        </span>
+        <span
+          className={`text-xs transform transition ${open ? "rotate-90" : ""}`}
+        >
+          ▶
+        </span>
+      </button>
+
+      {/* Content */}
+      {open && (
+        <div className="space-y-3">
+          {/* Filter */}
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder={`Filter ${title.toLowerCase()}...`}
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="w-full px-3 py-2 bg-surface border border-border text-sm font-mono text-foreground placeholder:text-foreground/30 focus:outline-none focus:border-accent"
+            />
+            {filter && (
+              <button
+                onClick={() => setFilter("")}
+                className="text-xs font-mono text-foreground/50 hover:text-red-500"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* List */}
+          {filteredItems.length === 0 ? (
+            <p className="text-foreground/30 font-mono text-sm">
+              No matching entries.
+            </p>
+          ) : (
+            <div className="space-y-2">{children(filteredItems)}</div>
+          )}
+        </div>
       )}
     </div>
   );
