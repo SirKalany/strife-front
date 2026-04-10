@@ -91,20 +91,23 @@ export default function Breadcrumb({
       </div>
 
       {/* Right: contact button */}
-      <Link
-        href="#"
-        className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
-        style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
-      >
-        Contact
-      </Link>
-      <Link
-        href="/admin"
-        className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
-        style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
-      >
-        Admin
-      </Link>
+      <div className="flex items-center gap-3">
+        <Link
+          href="/contact"
+          className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
+          style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
+        >
+          Contact
+        </Link>
+
+        <Link
+          href="/admin"
+          className="px-4 py-2 border border-border hover:border-accent text-foreground/50 hover:text-accent rounded-sm uppercase tracking-widest text-xs transition font-mono"
+          style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
+        >
+          Admin
+        </Link>
+      </div>
     </nav>
   );
 }

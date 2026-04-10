@@ -14,7 +14,7 @@ export default function ContentHeader({
 }: ContentHeaderProps) {
   return (
     <>
-      <header className="flex flex-col space-y-4">
+      <header className="flex flex-col space-y-6">
         <Breadcrumb
           domain={domain}
           country={country}
@@ -23,11 +23,18 @@ export default function ContentHeader({
           model={model.slug}
           modelTitle={model.name}
         />
-        <h1 className="text-4xl md:text-5xl font-bold text-accent text-center">
-          {model.name}
-        </h1>
-      </header>
+        <div className="max-w-3xl mx-auto w-full space-y-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-accent">
+            {model.name}
+          </h1>
 
+          {model.family?.description && (
+            <p className="text-foreground/60 text-base md:text-lg leading-relaxed">
+              {model.family.description}
+            </p>
+          )}
+        </div>
+      </header>
       {model.family?.imageUrl && (
         <img
           src={model.family.imageUrl}
@@ -35,12 +42,6 @@ export default function ContentHeader({
           className="w-full h-64 md:h-100 object-cover rounded-sm shadow-lg mt-6"
           onError={(e) => (e.currentTarget.style.display = "none")}
         />
-      )}
-
-      {model.family?.description && (
-        <p className="text-foreground/70 text-lg leading-relaxed mt-6">
-          {model.family.description}
-        </p>
       )}
     </>
   );
