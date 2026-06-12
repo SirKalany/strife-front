@@ -43,8 +43,6 @@ export default function EditFamilyPage({
       setSlug(family);
 
       try {
-        // You don’t have a direct "getFamilyBySlug"
-        // so we fetch ALL and find it
         const domains = await api.getDomains();
 
         for (const d of domains) {

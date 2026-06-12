@@ -40,7 +40,6 @@ export default async function FamilyPage({ params }: Props) {
                 src={familyData.imageUrl}
                 alt={familyData.name}
                 className="w-full h-80 object-cover object-center"
-                onError={(e) => (e.currentTarget.style.display = "none")}
               />
             </div>
           )}
