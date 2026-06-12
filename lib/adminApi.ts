@@ -65,6 +65,16 @@ export const adminApi = {
     return res.json();
   },
 
+  updateFamily: async (slug: string, body: object) => {
+    const res = await authFetch(`/families/${slug}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) throw new Error("Failed to update family");
+    return res.json();
+  },
+
   deleteModel: async (slug: string) => {
     const res = await authFetch(`/models/${slug}`, { method: "DELETE" });
     if (!res.ok) throw new Error("Failed to delete model");

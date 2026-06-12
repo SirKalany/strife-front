@@ -235,7 +235,10 @@ export default function EditModelPage({
               />
             </div>
             <div>
-              <label className={labelClass}>Image URL</label>
+              <label className={labelClass}>
+                Image URL (e.g. /models/t90/t90m.jpg)
+              </label>
+
               <input
                 type="text"
                 value={form.imageUrl}
@@ -243,7 +246,17 @@ export default function EditModelPage({
                   setForm((f) => ({ ...f, imageUrl: e.target.value }))
                 }
                 className={inputClass}
+                placeholder="/models/t90/t90m.jpg"
               />
+
+              {form.imageUrl && (
+                <img
+                  src={form.imageUrl}
+                  alt="Preview"
+                  className="mt-3 w-full h-40 object-cover rounded-sm border border-border"
+                  onError={(e) => (e.currentTarget.style.display = "none")}
+                />
+              )}
             </div>
           </div>
 

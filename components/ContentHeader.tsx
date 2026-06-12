@@ -1,3 +1,5 @@
+"use client";
+
 import Breadcrumb from "@/components/Breadcrumb";
 import { ModelDetailDto } from "@/lib/api";
 
@@ -12,6 +14,8 @@ export default function ContentHeader({
   domain,
   country,
 }: ContentHeaderProps) {
+  const imageSrc = model.imageUrl || model.family?.imageUrl;
+
   return (
     <>
       <header className="flex flex-col space-y-6">
@@ -35,9 +39,9 @@ export default function ContentHeader({
           )}
         </div>
       </header>
-      {model.family?.imageUrl && (
+      {imageSrc && (
         <img
-          src={model.family.imageUrl}
+          src={imageSrc}
           alt={model.name}
           className="w-full h-64 md:h-100 object-cover rounded-sm shadow-lg mt-6"
           onError={(e) => (e.currentTarget.style.display = "none")}

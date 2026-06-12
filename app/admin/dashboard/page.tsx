@@ -150,6 +150,7 @@ export default function AdminDashboard() {
               <EntryRow
                 key={family.slug}
                 label={family.name}
+                editHref={`/admin/edit/family/${family.slug}`}
                 onDelete={() => handleDeleteFamily(family.slug)}
                 deleting={deleting === family.slug}
               />

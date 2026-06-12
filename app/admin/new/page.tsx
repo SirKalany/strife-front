@@ -445,15 +445,33 @@ export default function NewArticlePage() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className={labelClass}>Image URL</label>
+            <label className={labelClass}>
+              Image URL (e.g. /models/t90/t90m.jpg)
+            </label>
+
             <input
               type="text"
               value={modelForm.imageUrl}
               onChange={(e) =>
-                setModelForm((f) => ({ ...f, imageUrl: e.target.value }))
+                setModelForm((prev) => ({
+                  ...prev,
+                  imageUrl: e.target.value,
+                }))
               }
               className={inputClass}
+              placeholder="/models/t90/t90m.jpg"
             />
+
+            {modelForm.imageUrl ? (
+              <img
+                src={modelForm.imageUrl}
+                alt="Preview"
+                className="mt-3 w-full h-40 object-cover rounded-sm border border-border"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : null}
           </div>
         </div>
 
