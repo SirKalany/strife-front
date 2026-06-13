@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { isLoggedIn } from "@/lib/auth";
 import { api, FamilyDto } from "@/lib/api";
@@ -13,22 +13,17 @@ const inputClass =
 const labelClass =
   "text-xs font-mono uppercase tracking-widest text-foreground/50 block mb-1";
 
-export default function EditFamilyPage({
-  params,
-}: {
-  params: Promise<{ family: string }>;
-}) {
+export default function EditFamilyPage() {
   const router = useRouter();
+  const params = useParams();
+  const slug = params.family as string;
 
-  const [slug, setSlug] = useState("");
   const [family, setFamily] = useState<FamilyDto | null>(null);
-
   const [form, setForm] = useState({
     name: "",
     imageUrl: "",
     description: "",
   });
-
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -39,40 +34,33 @@ export default function EditFamilyPage({
       return;
     }
 
-    params.then(async ({ family }) => {
-      setSlug(family);
+    if (!slug) return;
 
-      try {
-        const domains = await api.getDomains();
+    api
+      .getAllFamilies()
+      .then((families) => {
+        console.log("slug:", slug);
+        console.log("families:", families);
+        const found = families.find((f) => f.slug === slug);
+        console.log("found:", found);
 
-        for (const d of domains) {
-          const countries = await api.getAllCountries();
-
-          for (const c of countries) {
-            const families = await api.getFamilies(d.slug, c.slug);
-            const found = families.find((f) => f.slug === family);
-
-            if (found) {
-              setFamily(found);
-              setForm({
-                name: found.name,
-                imageUrl: found.imageUrl ?? "",
-                description: found.description ?? "",
-              });
-              setLoading(false);
-              return;
-            }
-          }
+        if (found) {
+          setFamily(found);
+          setForm({
+            name: found.name,
+            imageUrl: found.imageUrl ?? "",
+            description: found.description ?? "",
+          });
+        } else {
+          setError("Family not found.");
         }
-
-        setError("Family not found.");
         setLoading(false);
-      } catch {
+      })
+      .catch(() => {
         setError("Failed to load family.");
         setLoading(false);
-      }
-    });
-  }, [router, params]);
+      });
+  }, [router, slug]);
 
   async function handleSubmit() {
     if (!form.name) return;
@@ -109,7 +97,6 @@ export default function EditFamilyPage({
   return (
     <main className="min-h-screen bg-background text-foreground px-6 py-12">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <div className="text-xs text-accent font-mono tracking-widest mb-1">
             [ ADMIN PANEL ]
@@ -117,7 +104,6 @@ export default function EditFamilyPage({
           <h1 className="text-3xl font-bold text-accent uppercase tracking-[0.2em]">
             Edit Family
           </h1>
-
           <Link
             href="/admin/dashboard"
             className="text-xs font-mono text-foreground/40 hover:text-accent transition mt-2 inline-block"
@@ -127,7 +113,6 @@ export default function EditFamilyPage({
         </div>
 
         <div className="border border-border bg-surface p-8 rounded-sm space-y-6">
-          {/* Slug */}
           <div>
             <label className={labelClass}>Slug (read-only)</label>
             <div className="px-3 py-2 bg-background border border-border text-foreground/30 font-mono text-sm">
@@ -135,7 +120,6 @@ export default function EditFamilyPage({
             </div>
           </div>
 
-          {/* Name */}
           <div>
             <label className={labelClass}>
               Name (Changing this may break image paths)
@@ -148,7 +132,6 @@ export default function EditFamilyPage({
             />
           </div>
 
-          {/* Image */}
           <div>
             <label className={labelClass}>
               Image URL (e.g. /family/t90.jpg)
@@ -162,7 +145,6 @@ export default function EditFamilyPage({
               className={inputClass}
               placeholder="/family/t90.jpg"
             />
-
             {form.imageUrl && (
               <img
                 src={form.imageUrl}
@@ -173,7 +155,6 @@ export default function EditFamilyPage({
             )}
           </div>
 
-          {/* Description */}
           <div>
             <label className={labelClass}>Description</label>
             <textarea
@@ -186,10 +167,8 @@ export default function EditFamilyPage({
             />
           </div>
 
-          {/* Error */}
           {error && <p className="text-red-500 text-xs font-mono">{error}</p>}
 
-          {/* Submit */}
           <button
             onClick={handleSubmit}
             disabled={submitting || !form.name}
